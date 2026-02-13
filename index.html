@@ -15,7 +15,7 @@ background:#000;
 height:100%;
 }
 
-/* LANGIT MALAM CINEMATIC */
+/* LANGIT MALAM */
 .sky{
 position:fixed;
 width:300%;
@@ -97,7 +97,7 @@ pointer-events:none;
 to{transform:translateY(110vh);opacity:0;}
 }
 
-/* ENDING SCREEN */
+/* ENDING */
 #ending{
 position:fixed;
 inset:0;
@@ -145,8 +145,8 @@ opacity:0;
 
 <div class="sky"></div>
 
-<!-- 🎵 MUSIK (GANTI FILE MP3 KALAU MAU LAGU SENDIRI) -->
-<audio id="music" loop>
+<!-- 🎵 MUSIK FIX -->
+<audio id="music" loop preload="auto">
 <source src="https://gilangzhalifunnas255-design.github.io/UNTUK-PIA/lagu.mp3" type="audio/mpeg">
 </audio>
 
@@ -172,11 +172,9 @@ Untuk Febrianti Firantika 🌹
 
 <script>
 
-/* ===== MUSIC CINEMATIC PRO ===== */
 const music=document.getElementById("music");
-music.volume=0.08; // intro pelan (movie feel)
+music.volume=0.08;
 
-/* PESAN */
 const daftarPesan=[
 "Walau kita LDR, hati aku selalu pulang ke kamu 💖",
 "jarak kita memang jauh,tapi sayang aku ke kamu jauh lebih dari jarak❤️",
@@ -210,7 +208,7 @@ if(cb) cb();
 },45);
 }
 
-/* start (iphone safe) */
+/* start */
 function startApp(){
 if(started) return;
 started=true;
@@ -225,7 +223,8 @@ function kejutan(){
 
 if(!started || selesai) return;
 
-/* musik mulai saat klik */
+/* PLAY MUSIC FIX */
+music.currentTime=0;
 music.play().catch(()=>{});
 
 typeWriter(daftarPesan[index],()=>{
@@ -241,7 +240,7 @@ setTimeout(showEnding,1200);
 for(let i=0;i<15;i++) createLove();
 }
 
-/* love jatuh */
+/* LOVE */
 function createLove(){
 const love=document.createElement("div");
 love.classList.add("fallLove");
@@ -254,21 +253,19 @@ setTimeout(()=>love.remove(),6000);
 }
 setInterval(createLove,350);
 
-/* 🎬 ENDING CINEMATIC */
+/* ENDING CINEMATIC */
 function showEnding(){
 
 document.getElementById("cursor").style.display="none";
 document.getElementById("ending").classList.add("show");
 
-/* MUSIC BUILD-UP (kayak film) */
+/* MUSIC BUILD-UP */
 let vol=0.08;
 const cinematic=setInterval(()=>{
 if(vol<1){
 vol+=0.03;
 music.volume=vol;
-}else{
-clearInterval(cinematic);
-}
+}else clearInterval(cinematic);
 },250);
 
 /* LOVE EXPLOSION */
