@@ -15,7 +15,7 @@ background:#000;
 height:100%;
 }
 
-/* LANGIT MALAM */
+/* LANGIT MALAM CINEMATIC */
 .sky{
 position:fixed;
 width:300%;
@@ -94,13 +94,10 @@ animation:fall linear infinite;
 pointer-events:none;
 }
 @keyframes fall{
-to{
-transform:translateY(110vh);
-opacity:0;
-}
+to{transform:translateY(110vh);opacity:0;}
 }
 
-/* ENDING */
+/* ENDING SCREEN */
 #ending{
 position:fixed;
 inset:0;
@@ -113,20 +110,17 @@ transition:2s;
 z-index:999;
 pointer-events:none;
 }
-#ending.show{
-opacity:1;
-}
+#ending.show{opacity:1;}
 
 #endingText{
 font-size:40px;
 color:white;
 font-weight:bold;
 text-shadow:0 0 25px pink;
-animation:movieZoom 3s ease forwards;
+animation:zoom 3s ease forwards;
 text-align:center;
-padding:20px;
 }
-@keyframes movieZoom{
+@keyframes zoom{
 0%{opacity:0;transform:scale(0.2);}
 60%{opacity:1;transform:scale(1.25);}
 100%{transform:scale(1);}
@@ -137,7 +131,6 @@ padding:20px;
 position:absolute;
 font-size:26px;
 animation:explode 2s forwards;
-pointer-events:none;
 }
 @keyframes explode{
 to{
@@ -152,9 +145,9 @@ opacity:0;
 
 <div class="sky"></div>
 
-<!-- MUSIK -->
+<!-- 🎵 MUSIK (GANTI FILE MP3 KALAU MAU LAGU SENDIRI) -->
 <audio id="music" loop>
-<source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8c8f63f.mp3" type="audio/mpeg">
+<source src="https://cdn.pixabay.com/audio/2022/10/30/audio_9460f7c8d2.mp3" type="audio/mpeg">
 </audio>
 
 <div class="card">
@@ -179,9 +172,11 @@ Untuk Febrianti Firantika 🌹
 
 <script>
 
+/* ===== MUSIC CINEMATIC PRO ===== */
 const music=document.getElementById("music");
-music.volume=0.15;
+music.volume=0.08; // intro pelan (movie feel)
 
+/* PESAN */
 const daftarPesan=[
 "Walau kita LDR, hati aku selalu pulang ke kamu 💖",
 "jarak kita memang jauh,tapi sayang aku ke kamu jauh lebih dari jarak❤️",
@@ -197,7 +192,7 @@ let typingInterval;
 let selesai=false;
 let started=false;
 
-/* TYPING */
+/* typing */
 function typeWriter(text,cb){
 const el=document.getElementById("pesan");
 clearInterval(typingInterval);
@@ -215,25 +210,23 @@ if(cb) cb();
 },45);
 }
 
-/* START KHUSUS HP */
+/* start (iphone safe) */
 function startApp(){
-
 if(started) return;
 started=true;
-
-music.play().catch(()=>{});
-
 typeWriter(daftarPesan[0]);
 index=1;
 }
-
 document.body.addEventListener("click",startApp,{once:true});
 document.body.addEventListener("touchstart",startApp,{once:true});
 
-/* BUTTON */
+/* tombol */
 function kejutan(){
 
 if(!started || selesai) return;
+
+/* musik mulai saat klik */
+music.play().catch(()=>{});
 
 typeWriter(daftarPesan[index],()=>{
 
@@ -241,14 +234,14 @@ index++;
 
 if(index>=daftarPesan.length){
 selesai=true;
-setTimeout(showEnding,1000);
+setTimeout(showEnding,1200);
 }
 });
 
 for(let i=0;i<15;i++) createLove();
 }
 
-/* LOVE */
+/* love jatuh */
 function createLove(){
 const love=document.createElement("div");
 love.classList.add("fallLove");
@@ -261,30 +254,32 @@ setTimeout(()=>love.remove(),6000);
 }
 setInterval(createLove,350);
 
-/* ENDING */
+/* 🎬 ENDING CINEMATIC */
 function showEnding(){
 
 document.getElementById("cursor").style.display="none";
 document.getElementById("ending").classList.add("show");
 
-/* musik naik */
-let vol=0.15;
-const fade=setInterval(()=>{
+/* MUSIC BUILD-UP (kayak film) */
+let vol=0.08;
+const cinematic=setInterval(()=>{
 if(vol<1){
-vol+=0.05;
+vol+=0.03;
 music.volume=vol;
-}else clearInterval(fade);
-},300);
+}else{
+clearInterval(cinematic);
+}
+},250);
 
 /* LOVE EXPLOSION */
-for(let i=0;i<70;i++){
+for(let i=0;i<80;i++){
 const love=document.createElement("div");
 love.classList.add("explosion");
 love.innerHTML="💖";
 love.style.left="50%";
 love.style.top="50%";
-love.style.setProperty("--x",(Math.random()*600-300)+"px");
-love.style.setProperty("--y",(Math.random()*500-250)+"px");
+love.style.setProperty("--x",(Math.random()*700-350)+"px");
+love.style.setProperty("--y",(Math.random()*550-275)+"px");
 document.body.appendChild(love);
 setTimeout(()=>love.remove(),2000);
 }
