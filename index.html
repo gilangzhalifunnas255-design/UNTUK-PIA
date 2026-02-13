@@ -15,7 +15,7 @@ height:100%;
 background:linear-gradient(160deg,#0f0c29,#302b63,#24243e);
 }
 
-/* LANGIT BINTANG */
+/* STAR SKY */
 .sky{
 position:fixed;
 width:300%;
@@ -49,9 +49,6 @@ color:white;
 backdrop-filter:blur(8px);
 box-shadow:0 0 35px rgba(255,105,180,0.4);
 transition:0.5s;
-}
-.card:hover{
-box-shadow:0 0 55px rgba(255,105,180,0.8);
 }
 
 .heart{
@@ -90,7 +87,7 @@ font-size:14px;
 cursor:pointer;
 }
 
-/* LOVE JATUH */
+/* LOVE FALL */
 .fallLove{
 position:absolute;
 top:-20px;
@@ -151,7 +148,8 @@ opacity:0;
 
 <div class="sky"></div>
 
-<audio id="music" loop preload="auto">
+<!-- AUTOPLAY FIX (muted trick supaya lolos browser) -->
+<audio id="music" autoplay loop muted playsinline>
 <source src="https://gilangzhalifunnas255-design.github.io/UNTUK-PIA/lagu.mp3" type="audio/mpeg">
 </audio>
 
@@ -178,7 +176,24 @@ Untuk Febrianti Firantika 🌹
 <script>
 
 const music=document.getElementById("music");
-music.volume=0;
+
+/* AUTOPLAY DENGAN UNMUTE + FADE */
+window.addEventListener("load",()=>{
+    music.volume=0;
+    music.play().then(()=>{
+        music.muted=false;   // buka mute setelah play
+        fadeInMusic();
+    });
+});
+
+function fadeInMusic(){
+    let target=0.08;
+    let fade=setInterval(()=>{
+        if(music.volume<target){
+            music.volume+=0.01;
+        }else clearInterval(fade);
+    },200);
+}
 
 const daftarPesan=[
 "Walau kita LDR, hati aku selalu pulang ke kamu 💖",
@@ -194,28 +209,6 @@ let index=0;
 let typingInterval;
 let selesai=false;
 let started=false;
-
-/* AUTO START */
-window.addEventListener("load",()=>{
-startApp();
-music.play().then(()=>fadeInMusic()).catch(()=>{
-document.body.addEventListener("touchstart",startMusicOnce,{once:true});
-});
-});
-
-function startMusicOnce(){
-music.play();
-fadeInMusic();
-}
-
-function fadeInMusic(){
-let target=0.08;
-let fade=setInterval(()=>{
-if(music.volume<target){
-music.volume+=0.01;
-}else clearInterval(fade);
-},200);
-}
 
 function typeWriter(text,cb){
 const el=document.getElementById("pesan");
@@ -239,9 +232,14 @@ started=true;
 typeWriter(daftarPesan[0]);
 index=1;
 }
+startApp();
 
 function kejutan(){
 if(!started||selesai) return;
+
+if(music.paused){
+music.play();
+}
 
 typeWriter(daftarPesan[index],()=>{
 index++;
